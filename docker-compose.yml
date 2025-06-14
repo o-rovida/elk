@@ -13,6 +13,9 @@ services:
     ports:
       - 9200:9200
       - 9300:9300
+    networks:
+      - coolify_net
+
   logstash:
     image: docker.elastic.co/logstash/logstash:7.17.0
     depends_on:
@@ -27,6 +30,8 @@ services:
       - 8081:8080 # Porta alterada para evitar conflito
     volumes:
       - ./pipeline/:/usr/share/logstash/pipeline/:ro
+    networks:
+      - coolify_net
 
   kibana:
     image: docker.elastic.co/kibana/kibana:7.17.0
@@ -38,5 +43,13 @@ services:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
     ports:
       - 5601:5601
+    networks:
+      - coolify_net
+
 volumes:
   es_data:
+
+networks:
+  coolify_net:
+    name: coolify # Especifica o nome real da rede externa
+    external: true
