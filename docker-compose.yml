@@ -27,7 +27,7 @@ services:
     ports:
       - 9600:9600
       - 5044:5044
-      - 8080:8080
+      - 8085:8080
     volumes:
       - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
     networks:
