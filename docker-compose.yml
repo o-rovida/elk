@@ -1,19 +1,6 @@
 version: "3.7"
 
 services:
-  filebeat:
-    depends_on:
-      - elasticsearch
-    image: docker.elastic.co/beats/filebeat:7.17.10
-    command: filebeat -e -c /usr/share/filebeat/filebeat.yml #reads configuration file
-    # command: "setup -E setup.kibana.host=kibana:5601 -E output.elasticsearch.hosts=['elasticsearch:9200']"
-    volumes:
-      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml
-      - ./noSpoon.log:/usr/share/filebeat/noSpoon.log
-    restart: always
-    networks:
-      - elk_network
-
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0
     container_name: elasticsearch
@@ -40,9 +27,9 @@ services:
     ports:
       - 9600:9600
       - 5044:5044
-    # command: logstash -f /usr/share/logstash/pipeline/logstash.conf #redundant was testing
-    # volumes:
-    # - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf #configure
+      - 8080:8080
+    volumes:
+      - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
     networks:
       - elk_network
 
